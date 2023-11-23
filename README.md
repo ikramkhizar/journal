@@ -10,7 +10,7 @@ What things you need to install the software.
 
 - Git.
 - PHP.
-- Nodejs
+- Nodejs.
 - Composer.
 - A webserver like Nginx or Apache.
 
@@ -25,7 +25,7 @@ You can also download the entire repository as a zip file and unpack in on your 
 After cloning the application, you need to install it's dependencies.
 
 ```
-$ cd aviary
+$ cd journal
 $ composer install
 $ npm install
 $ npm run dev
