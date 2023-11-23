@@ -5,6 +5,7 @@ use App\Http\Controllers\User\ProfileController;
 
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\GoalController;
+use App\Http\Controllers\User\TargetController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,15 +35,15 @@ Route::get('/', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    
-    
+
+
     // Routes for admin
-    Route::prefix('admin')->name('admin.')->group(function() {
+    Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     });
 
     // Routes for user
-    Route::prefix('user')->name('user.')->group(function() {
+    Route::prefix('user')->name('user.')->group(function () {
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -50,7 +51,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
         Route::resource('goals', GoalController::class);
+        Route::resource('targets', TargetController::class);
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

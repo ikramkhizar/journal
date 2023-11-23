@@ -13,7 +13,7 @@ trait MultiTenantModelTrait
             static::creating(function ($model) {
                 $model->created_by_id = auth()->id();
             });
-        
+
             static::addGlobalScope('created_by_id', function (Builder $builder) {
                 $field = sprintf('%s.%s', $builder->getQuery()->from, 'created_by_id');
 

@@ -28,15 +28,12 @@ const userRole = usePage().props.auth.user.role
 
               <!-- Navigation Links -->
               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" v-if="userRole == 'admin'">
-                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-                  Dashboard
-                </NavLink>
+                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')"> Dashboard </NavLink>
               </div>
               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" v-else>
-                <NavLink :href="route('user.dashboard')" :active="route().current('user.dashboard')">
-                  Dashboard
-                </NavLink>
+                <NavLink :href="route('user.dashboard')" :active="route().current('user.dashboard')"> Dashboard </NavLink>
                 <NavLink :href="route('user.goals.index')" :active="route().current('user.goals.*')">Goals</NavLink>
+                <NavLink :href="route('user.targets.index')" :active="route().current('user.targets.*')"> Targets</NavLink>
               </div>
             </div>
 
@@ -52,12 +49,7 @@ const userRole = usePage().props.auth.user.role
                       >
                         {{ $page.props.auth.user.name }}
 
-                        <svg
-                          class="ms-2 -me-0.5 h-4 w-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
+                        <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                           <path
                             fill-rule="evenodd"
                             d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -118,17 +110,12 @@ const userRole = usePage().props.auth.user.role
           class="sm:hidden"
         >
           <div class="pt-2 pb-3 space-y-1" v-if="userRole == 'admin'">
-            <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
-              Dashboard
-            </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')"> Dashboard </ResponsiveNavLink>
           </div>
           <div class="pt-2 pb-3 space-y-1" v-else>
-            <ResponsiveNavLink :href="route('user.dashboard')" :active="route().current('user.dashboard')">
-              Dashboard
-            </ResponsiveNavLink>
-            <ResponsiveNavLink :href="route('user.goals.index')" :active="route().current('user.goals.*')">
-              Goals
-            </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('user.dashboard')" :active="route().current('user.dashboard')"> Dashboard </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('user.goals.index')" :active="route().current('user.goals.*')"> Goals </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('user.targets.index')" :active="route().current('user.targets.*')"> Targets </ResponsiveNavLink>
           </div>
 
           <!-- Responsive Settings Options -->
@@ -143,9 +130,7 @@ const userRole = usePage().props.auth.user.role
             </div>
 
             <div class="mt-3 space-y-1">
-              <ResponsiveNavLink v-if="userRole == 'user'" :href="route('user.profile.edit')">
-                Profile
-              </ResponsiveNavLink>
+              <ResponsiveNavLink v-if="userRole == 'user'" :href="route('user.profile.edit')"> Profile </ResponsiveNavLink>
               <ResponsiveNavLink :href="route('logout')" method="post" as="button"> Log Out </ResponsiveNavLink>
             </div>
           </div>

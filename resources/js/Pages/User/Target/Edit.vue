@@ -7,24 +7,40 @@ import TextInput from "@/Components/TextInput.vue"
 import { Head, Link, useForm } from "@inertiajs/vue3"
 
 const props = defineProps({
-  goal: Object
+  target: Object,
+  goals: Object
 })
 
-const form = useForm(props.goal)
+const form = useForm(props.target)
 </script>
 
 <template>
-  <Head title="Edit Goal" />
+  <Head title="Edit Target" />
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Goal</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Target</h2>
     </template>
 
     <div class="py-10">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-          <form @submit.prevent="form.put(route('user.goals.update', goal.id))" class="space-y-6 max-w-xl">
+          <form @submit.prevent="form.put(route('user.targets.update', target.id))" class="space-y-6 max-w-xl">
+            <div>
+              <InputLabel for="goal_id" value="Select Goal" />
+
+              <select
+                name="goal_id"
+                id="goal_id"
+                class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 cursor-pointer"
+                v-model="form.goal_id"
+              >
+                <option v-for="goal in goals" :value="goal.id">{{ goal.name }}</option>
+              </select>
+
+              <InputError class="mt-2" :message="form.errors.goal_id" />
+            </div>
+
             <div>
               <InputLabel for="name" value="Name" />
 
@@ -34,35 +50,21 @@ const form = useForm(props.goal)
             </div>
 
             <div>
-              <InputLabel for="description" value="Description" />
+              <InputLabel for="type" value="Select Type" />
 
-              <textarea
-                id="description"
-                name="description"
-                cols="30"
-                rows="5"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                v-model="form.description"
-              ></textarea>
+              <select
+                name="type"
+                id="type"
+                class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 cursor-pointer"
+                v-model="form.type"
+              >
+                <option value="number">Number</option>
+                <option value="boolean">Boolean</option>
+                <option value="currency">Currency</option>
+                <option value="tasks">Tasks</option>
+              </select>
 
-              <InputError class="mt-2" :message="form.errors.description" />
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <InputLabel for="start_date" value="Start Date" />
-
-                <TextInput id="start_date" type="date" class="mt-1 block w-full" v-model="form.start_date" />
-
-                <InputError class="mt-2" :message="form.errors.start_date" />
-              </div>
-              <div>
-                <InputLabel for="due_date" value="Due Date" />
-
-                <TextInput id="due_date" type="date" class="mt-1 block w-full" v-model="form.due_date" />
-
-                <InputError class="mt-2" :message="form.errors.due_date" />
-              </div>
+              <InputError class="mt-2" :message="form.errors.goal_id" />
             </div>
 
             <div class="flex items-center gap-4">
