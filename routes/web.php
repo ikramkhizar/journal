@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\ProfileController;
+
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
+use App\Http\Controllers\User\GoalController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,14 +29,28 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    
+    // Routes for admin
+    Route::prefix('admin')->name('admin.')->group(function() {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    });
+
+    // Routes for user
+    Route::prefix('user')->name('user.')->group(function() {
+        Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::resource('goals', GoalController::class);
+    });
 });
 
 require __DIR__.'/auth.php';
