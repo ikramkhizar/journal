@@ -54,6 +54,8 @@ $ npm run dev
 ## Built With
 
 - [Laravel](https://laravel.com) - The PHP framework for building the API endpoints needed for the application
+- [Vue.js](https://vuejs.org/) - An approachable, performant and versatile framework for building web user interfaces.
+- [Inertia](https://inertiajs.com/) - Build single-page apps, without building an API
 
 ## License
 
