@@ -1,4 +1,4 @@
-# Building bird managment platform with Laravel
+# Building Goal managment, Habit managment platform with Laravel, Vue.js, Inertia.js
 
 ## Getting Started
 
@@ -28,6 +28,7 @@ After cloning the application, you need to install it's dependencies.
 $ cd aviary
 $ composer install
 $ npm install
+$ npm run dev
 ```
 
 ### Setup
