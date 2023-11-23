@@ -10,7 +10,7 @@ What things you need to install the software.
 
 - Git.
 - PHP.
-- Nodejs
+- Nodejs.
 - Composer.
 - A webserver like Nginx or Apache.
 
