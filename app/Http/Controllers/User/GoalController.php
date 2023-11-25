@@ -13,17 +13,25 @@ class GoalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $goals = Goal::paginate(7)->through(fn ($goal) => [
-            'id' => $goal->id,
-            'name' => $goal->name,
-            'description' => $goal->description ? substr($goal->description, 0, 50) . '...' : '',
-            'start_date' => $goal->start_date ? $goal->start_date->toDateString() : '',
-            'due_date' => $goal->due_date ? $goal->due_date->toDateString() : '',
-        ]);
+        $goals = Goal::query()
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->paginate(7)
+            ->withQueryString()
+            ->through(fn ($goal) => [
+                'id' => $goal->id,
+                'name' => $goal->name,
+                'description' => $goal->description ? substr($goal->description, 0, 50) . '...' : '',
+                'start_date' => $goal->start_date ? $goal->start_date->toDateString() : '',
+                'due_date' => $goal->due_date ? $goal->due_date->toDateString() : '',
+            ]);
 
-        return inertia('User/Goal/Index', compact('goals'));
+        $filters = $request->only(['search']);
+
+        return inertia('User/Goal/Index', compact('goals', 'filters'));
     }
 
     /**

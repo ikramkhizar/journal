@@ -1,12 +1,41 @@
 <script setup>
-import { ref } from "vue"
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue"
-import Pagination from "@/Components/Pagination.vue"
-import { router } from "@inertiajs/vue3"
+import { ref, watch } from 'vue'
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import Pagination from '@/Components/Pagination.vue'
+import { router } from '@inertiajs/vue3'
+import debounce from 'lodash/debounce'
 
 const props = defineProps({
-  goals: Object
+  goals: Object,
+  filters: Object
 })
+
+let search = ref(props.filters.search)
+
+watch(
+  search,
+  debounce(function (value) {
+    router.get(
+      route('user.goals.index'),
+      { search: value },
+      {
+        preserveState: true,
+        replace: true
+      }
+    )
+  }, 300)
+)
+
+// watch(search, value => {
+//   router.get(
+//     route('user.goals.index'),
+//     { search: value },
+//     {
+//       preserveState: true,
+//       replace: true
+//     }
+//   )
+// })
 
 // const filteredData = ref(props.goals.data)
 
@@ -36,8 +65,8 @@ const props = defineProps({
 // }
 
 const destroy = id => {
-  if (confirm("Are you sure?")) {
-    router.delete(route("user.goals.destroy", id), {
+  if (confirm('Are you sure?')) {
+    router.delete(route('user.goals.destroy', id), {
       onSuccess: () => {},
       onError: error => {
         console.error(error)
@@ -63,8 +92,9 @@ const destroy = id => {
               class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1"
               type="text"
               placeholder="Search Goal"
-              @keyup="handleGoalSearch($event.target.value)"
+              v-model="search"
             />
+            <!-- @keyup="handleGoalSearch($event.target.value)" -->
           </div>
           <Link
             :href="route('user.goals.create')"
@@ -97,7 +127,7 @@ const destroy = id => {
                       <tr v-for="goal in goals.data" :key="goal.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {{ goal.description ? goal.description.slice(0, 50) + "..." : "" }}
+                          {{ goal.description ? goal.description.slice(0, 50) + '...' : '' }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.start_date }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.due_date }}</td>
