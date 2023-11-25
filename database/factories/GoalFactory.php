@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class GoalFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'description' => fake()->text(500),
+            'start_date' => fake()->dateTimeThisMonth(),
+            'due_date' => fake()->dateTimeThisMonth(),
+            'created_by_id' => User::where('id', '!=', 1)->get()->random()->id
         ];
     }
 }

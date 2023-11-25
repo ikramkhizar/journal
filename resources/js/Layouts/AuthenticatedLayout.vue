@@ -5,7 +5,7 @@ import Dropdown from "@/Components/Dropdown.vue"
 import DropdownLink from "@/Components/DropdownLink.vue"
 import NavLink from "@/Components/NavLink.vue"
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue"
-import { Link, usePage } from "@inertiajs/vue3"
+import { usePage } from "@inertiajs/vue3"
 
 const showingNavigationDropdown = ref(false)
 const userRole = usePage().props.auth.user.role
@@ -139,7 +139,7 @@ const userRole = usePage().props.auth.user.role
 
       <!-- Page Heading -->
       <header class="bg-white shadow" v-if="$slots.header">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
           <slot name="header" />
         </div>
       </header>

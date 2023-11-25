@@ -4,10 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GoalRequest;
-use App\Http\Resources\GoalResource;
 use App\Models\Goal;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Inertia\Response;
 
 class GoalController extends Controller
@@ -17,7 +15,13 @@ class GoalController extends Controller
      */
     public function index(): Response
     {
-        $goals =  GoalResource::collection(Goal::all());
+        $goals = Goal::paginate(7)->through(fn ($goal) => [
+            'id' => $goal->id,
+            'name' => $goal->name,
+            'description' => $goal->description ? substr($goal->description, 0, 50) . '...' : '',
+            'start_date' => $goal->start_date ? $goal->start_date->toDateString() : '',
+            'due_date' => $goal->due_date ? $goal->due_date->toDateString() : '',
+        ]);
 
         return inertia('User/Goal/Index', compact('goals'));
     }

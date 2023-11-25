@@ -1,11 +1,39 @@
 <script setup>
+import { ref } from "vue"
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue"
-import { Head, Link } from "@inertiajs/vue3"
+import Pagination from "@/Components/Pagination.vue"
 import { router } from "@inertiajs/vue3"
 
-defineProps({
+const props = defineProps({
   goals: Object
 })
+
+// const filteredData = ref(props.goals.data)
+
+// const escapeRegExp = value => {
+//   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+// }
+
+// const handleGoalSearch = searchValue => {
+//   // console.log(searchValue)
+
+//   // console.log("coming")
+//   // const filterGoals = props.goal.filter((item) => item.)
+
+//   // setSearchText()
+
+//   const searchRegex = new RegExp(escapeRegExp(searchValue), "i")
+
+//   if (searchValue.length) {
+//     const filteredRows = props.goals.data.filter(row => {
+//       return searchRegex.test(row["name"].toString())
+//     })
+
+//     filteredData.value = filteredRows
+//   } else {
+//     filteredData.value = props.goals.data
+//   }
+// }
 
 const destroy = id => {
   if (confirm("Are you sure?")) {
@@ -27,9 +55,17 @@ const destroy = id => {
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Goals</h2>
     </template>
 
-    <div class="py-10">
+    <div class="py-8">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="mb-5">
+        <div class="mb-4 flex justify-between items-center">
+          <div>
+            <input
+              class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1"
+              type="text"
+              placeholder="Search Goal"
+              @keyup="handleGoalSearch($event.target.value)"
+            />
+          </div>
           <Link
             :href="route('user.goals.create')"
             class="px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
@@ -44,39 +80,25 @@ const destroy = id => {
                   <table class="min-w-full border divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                       <tr>
-                        <th
-                          scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Name
-                        </th>
-                        <th
-                          scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Description
                         </th>
-                        <th
-                          scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Start Date
                         </th>
-                        <th
-                          scope="col"
-                          class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                        >
-                          Due Date
-                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
                         <th scope="col" class="relative px-6 py-3">
                           <span class="sr-only">Actions</span>
                         </th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                      <tr v-for="goal in goals" :key="goal.id">
+                      <tr v-for="goal in goals.data" :key="goal.id">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.description }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {{ goal.description ? goal.description.slice(0, 50) + "..." : "" }}
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.start_date }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.due_date }}</td>
                         <td class="px-6">
@@ -96,6 +118,7 @@ const destroy = id => {
                       </tr>
                     </tbody>
                   </table>
+                  <Pagination :links="goals.links" class="mt-5 mb-1 flex justify-center" />
                 </div>
               </div>
             </div>
