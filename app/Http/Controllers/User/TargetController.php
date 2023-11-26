@@ -13,11 +13,25 @@ class TargetController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $targets = Target::with('goal')->get();
+        $targets = Target::with('goal:id,name')
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })
+            ->paginate(7)
+            ->withQueryString()
+            ->through(fn ($target) => [
+                'id' => $target->id,
+                'goal_name' => $target->goal->name,
+                'name' => $target->name,
+                'position' => $target->position,
+                'type_label' => $target->type_label,
+            ]);
 
-        return inertia('User/Target/Index', compact('targets'));
+        $filters = $request->only(['search']);
+
+        return inertia('User/Target/Index', compact('targets', 'filters'));
     }
 
     /**
@@ -25,7 +39,7 @@ class TargetController extends Controller
      */
     public function create()
     {
-        $goals = Goal::all();
+        $goals = Goal::select('id', 'name')->get();
 
         return inertia('User/Target/Create', compact('goals'));
     }
@@ -55,7 +69,7 @@ class TargetController extends Controller
      */
     public function edit(Target $target)
     {
-        $goals = Goal::all();
+        $goals = Goal::select('id', 'name')->get();
 
         return inertia('User/Target/Edit', compact('target', 'goals'));
     }

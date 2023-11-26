@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Target;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class TargetSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Target::factory()->count(100)->create();
     }
 }
