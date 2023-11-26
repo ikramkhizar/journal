@@ -25,8 +25,8 @@ class GoalController extends Controller
                 'id' => $goal->id,
                 'name' => $goal->name,
                 'description' => $goal->description ? substr($goal->description, 0, 50) . '...' : '',
-                'start_date' => $goal->start_date ? $goal->start_date->toDateString() : '',
-                'due_date' => $goal->due_date ? $goal->due_date->toDateString() : '',
+                'start_date' => $goal->start_date,
+                'due_date' => $goal->due_date,
             ]);
 
         $filters = $request->only(['search']);

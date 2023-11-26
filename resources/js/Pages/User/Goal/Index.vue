@@ -26,44 +26,6 @@ watch(
   }, 300)
 )
 
-// watch(search, value => {
-//   router.get(
-//     route('user.goals.index'),
-//     { search: value },
-//     {
-//       preserveState: true,
-//       replace: true
-//     }
-//   )
-// })
-
-// const filteredData = ref(props.goals.data)
-
-// const escapeRegExp = value => {
-//   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
-// }
-
-// const handleGoalSearch = searchValue => {
-//   // console.log(searchValue)
-
-//   // console.log("coming")
-//   // const filterGoals = props.goal.filter((item) => item.)
-
-//   // setSearchText()
-
-//   const searchRegex = new RegExp(escapeRegExp(searchValue), "i")
-
-//   if (searchValue.length) {
-//     const filteredRows = props.goals.data.filter(row => {
-//       return searchRegex.test(row["name"].toString())
-//     })
-
-//     filteredData.value = filteredRows
-//   } else {
-//     filteredData.value = props.goals.data
-//   }
-// }
-
 const destroy = id => {
   if (confirm('Are you sure?')) {
     router.delete(route('user.goals.destroy', id), {
@@ -94,7 +56,6 @@ const destroy = id => {
               placeholder="Search Goal"
               v-model="search"
             />
-            <!-- @keyup="handleGoalSearch($event.target.value)" -->
           </div>
           <Link
             :href="route('user.goals.create')"

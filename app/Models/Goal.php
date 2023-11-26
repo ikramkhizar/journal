@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Attribute;
 use App\Traits\MultiTenantModelTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Goal extends Model
 {
@@ -12,13 +14,22 @@ class Goal extends Model
 
     protected $fillable = ['name', 'description', 'start_date', 'due_date', 'created_by_id'];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'start_date' => 'datetime',
-        'due_date' => 'datetime',
-    ];
+    protected function startDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value->toDateString(),
+        );
+    }
+
+    protected function dueDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value->toDateString(),
+        );
+    }
+
+    public function targets(): HasMany
+    {
+        return $this->hasMany(Goal::class);
+    }
 }
