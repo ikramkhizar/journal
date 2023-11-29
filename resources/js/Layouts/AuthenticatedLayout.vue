@@ -1,11 +1,11 @@
 <script setup>
-import { ref } from "vue"
-import ApplicationLogo from "@/Components/ApplicationLogo.vue"
-import Dropdown from "@/Components/Dropdown.vue"
-import DropdownLink from "@/Components/DropdownLink.vue"
-import NavLink from "@/Components/NavLink.vue"
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue"
-import { usePage } from "@inertiajs/vue3"
+import { ref } from 'vue'
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import Dropdown from '@/Components/Dropdown.vue'
+import DropdownLink from '@/Components/DropdownLink.vue'
+import NavLink from '@/Components/NavLink.vue'
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue'
+import { usePage } from '@inertiajs/vue3'
 
 const showingNavigationDropdown = ref(false)
 const userRole = usePage().props.auth.user.role
@@ -16,7 +16,8 @@ const userRole = usePage().props.auth.user.role
     <div class="min-h-screen bg-gray-100">
       <nav class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- px-4 sm:px-6 lg:px-8 -->
+        <div class="max-w-7xl mx-auto">
           <div class="flex justify-between h-16">
             <div class="flex">
               <!-- Logo -->
@@ -33,7 +34,8 @@ const userRole = usePage().props.auth.user.role
               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" v-else>
                 <NavLink :href="route('user.dashboard')" :active="route().current('user.dashboard')"> Dashboard </NavLink>
                 <NavLink :href="route('user.goals.index')" :active="route().current('user.goals.*')">Goals</NavLink>
-                <NavLink :href="route('user.targets.index')" :active="route().current('user.targets.*')"> Targets</NavLink>
+                <NavLink :href="route('user.targets.index')" :active="route().current('user.targets.*')">Targets</NavLink>
+                <NavLink :href="route('user.tasks.index')" :active="route().current('user.tasks.*')">Tasks</NavLink>
               </div>
             </div>
 
@@ -113,9 +115,10 @@ const userRole = usePage().props.auth.user.role
             <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')"> Dashboard </ResponsiveNavLink>
           </div>
           <div class="pt-2 pb-3 space-y-1" v-else>
-            <ResponsiveNavLink :href="route('user.dashboard')" :active="route().current('user.dashboard')"> Dashboard </ResponsiveNavLink>
-            <ResponsiveNavLink :href="route('user.goals.index')" :active="route().current('user.goals.*')"> Goals </ResponsiveNavLink>
-            <ResponsiveNavLink :href="route('user.targets.index')" :active="route().current('user.targets.*')"> Targets </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('user.dashboard')" :active="route().current('user.dashboard')">Dashboard</ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('user.goals.index')" :active="route().current('user.goals.*')">Goals</ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('user.targets.index')" :active="route().current('user.targets.*')">Targets</ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('user.tasks.index')" :active="route().current('user.tasks.*')">Tasks</ResponsiveNavLink>
           </div>
 
           <!-- Responsive Settings Options -->
@@ -139,7 +142,7 @@ const userRole = usePage().props.auth.user.role
 
       <!-- Page Heading -->
       <header class="bg-white shadow" v-if="$slots.header">
-        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto py-4">
           <slot name="header" />
         </div>
       </header>

@@ -47,7 +47,7 @@ const destroy = id => {
     </template>
 
     <div class="py-8">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
         <div class="mb-4 flex justify-between items-center">
           <div>
             <input
@@ -76,6 +76,12 @@ const destroy = id => {
                           Description
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          No of Targets
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          No of Tasks
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Start Date
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
@@ -85,11 +91,13 @@ const destroy = id => {
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                      <tr v-for="goal in goals.data" :key="goal.id">
+                      <tr v-for="goal in goals.data" :key="goal.id" v-if="goals.total > 0">
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {{ goal.description ? goal.description.slice(0, 50) + '...' : '' }}
                         </td>
+                        <td class="px-16 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.targets_count }}</td>
+                        <td class="px-16 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.tasks_count }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.start_date }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ goal.due_date }}</td>
                         <td class="px-6">
@@ -107,9 +115,12 @@ const destroy = id => {
                           </button>
                         </td>
                       </tr>
+                      <tr v-else>
+                        <td colspan="7" class="text-center py-3">No goals found.</td>
+                      </tr>
                     </tbody>
                   </table>
-                  <Pagination :links="goals.links" class="mt-5 mb-1 flex justify-center" />
+                  <Pagination v-if="goals.total > goals.per_page" :links="goals.links" class="mt-5 mb-1 flex justify-center" />
                 </div>
               </div>
             </div>

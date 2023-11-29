@@ -16,6 +16,7 @@ class TargetController extends Controller
     public function index(Request $request)
     {
         $targets = Target::with('goal:id,name')
+            ->withCount('tasks')
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', '%' . $search . '%');
             })
@@ -27,6 +28,7 @@ class TargetController extends Controller
                 'name' => $target->name,
                 'position' => $target->position,
                 'type_label' => $target->type_label,
+                'tasks_count' => $target->tasks_count
             ]);
 
         $filters = $request->only(['search']);

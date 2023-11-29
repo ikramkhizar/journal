@@ -6,7 +6,7 @@ import { router } from '@inertiajs/vue3'
 import debounce from 'lodash/debounce'
 
 const props = defineProps({
-  targets: Object,
+  tasks: Object,
   filters: Object
 })
 
@@ -16,7 +16,7 @@ watch(
   search,
   debounce(function (value) {
     router.get(
-      route('user.targets.index'),
+      route('user.tasks.index'),
       { search: value },
       {
         preserveState: true,
@@ -28,7 +28,7 @@ watch(
 
 const destroy = id => {
   if (confirm('Are you sure?')) {
-    router.delete(route('user.targets.destroy', id), {
+    router.delete(route('user.tasks.destroy', id), {
       onSuccess: () => {},
       onError: error => {
         console.error(error)
@@ -39,11 +39,11 @@ const destroy = id => {
 </script>
 
 <template>
-  <Head title="Targets" />
+  <Head title="Tasks" />
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Targets</h2>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Tasks</h2>
     </template>
 
     <div class="py-8">
@@ -53,14 +53,14 @@ const destroy = id => {
             <input
               class="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1"
               type="text"
-              placeholder="Search Target"
+              placeholder="Search Task"
               v-model="search"
             />
           </div>
           <Link
-            :href="route('user.targets.create')"
+            :href="route('user.tasks.create')"
             class="px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-            >Add Target</Link
+            >Add Task</Link
           >
         </div>
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -78,28 +78,47 @@ const destroy = id => {
                           Target Name
                         </th>
                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          No of Tasks
+                          Task Name
                         </th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <!-- <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Description
+                        </th> -->
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
                         <th scope="col" class="relative px-6 py-3">
                           <span class="sr-only">Actions</span>
                         </th>
                       </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                      <tr v-for="target in targets.data" :key="target.id" v-if="targets.total > 0">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ target.goal_name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ target.name }}</td>
-                        <td class="px-16 py-4 whitespace-nowrap text-sm text-gray-500">{{ target.tasks_count }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ target.type_label }}</td>
+                      <tr v-for="task in tasks.data" :key="task.id" v-if="tasks.total > 0">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.goal_name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.target_name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.name }}</td>
+                        <!-- <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.description }}</td> -->
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <span
+                            class="rounded-md px-2 py-1 text-white"
+                            :class="{
+                              'bg-amber-500': task.priority == 'low',
+                              'bg-cyan-500': task.priority == 'medium',
+                              'bg-red-600': task.priority == 'high'
+                            }"
+                          >
+                            {{ task.priority_label }}
+                          </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.status_label }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ task.due_date }}</td>
                         <td class="px-6">
                           <Link
-                            :href="route('user.targets.edit', target.id)"
+                            :href="route('user.tasks.edit', task.id)"
                             class="inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-sm text-white"
                             >Edit</Link
                           >
                           <button
-                            @click="destroy(target.id)"
+                            @click="destroy(task.id)"
                             type="button"
                             class="ms-2 inline-flex items-center px-3 py-1 bg-red-500 border border-transparent rounded-md font-semibold text-sm text-white"
                           >
@@ -108,11 +127,11 @@ const destroy = id => {
                         </td>
                       </tr>
                       <tr v-else>
-                        <td colspan="5" class="text-center py-3">No targets found.</td>
+                        <td colspan="8" class="text-center py-3">No tasks found.</td>
                       </tr>
                     </tbody>
                   </table>
-                  <Pagination v-if="targets.total > targets.per_page" :links="targets.links" class="mt-5 mb-1 flex justify-center" />
+                  <Pagination v-if="tasks.total > tasks.per_page" :links="tasks.links" class="mt-5 mb-1 flex justify-center" />
                 </div>
               </div>
             </div>

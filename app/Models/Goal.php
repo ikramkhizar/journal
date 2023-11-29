@@ -7,6 +7,7 @@ use App\Traits\MultiTenantModelTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Goal extends Model
 {
@@ -30,6 +31,11 @@ class Goal extends Model
 
     public function targets(): HasMany
     {
-        return $this->hasMany(Goal::class);
+        return $this->hasMany(Target::class);
+    }
+
+    public function tasks(): HasOneThrough
+    {
+        return $this->hasOneThrough(Task::class, Target::class);
     }
 }

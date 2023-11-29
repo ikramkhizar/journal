@@ -15,7 +15,7 @@ class GoalController extends Controller
      */
     public function index(Request $request): Response
     {
-        $goals = Goal::query()
+        $goals = Goal::withCount(['targets', 'tasks'])
             ->when($request->input('search'), function ($query, $search) {
                 $query->where('name', 'like', '%' . $search . '%');
             })
@@ -24,9 +24,11 @@ class GoalController extends Controller
             ->through(fn ($goal) => [
                 'id' => $goal->id,
                 'name' => $goal->name,
-                'description' => $goal->description ? substr($goal->description, 0, 50) . '...' : '',
+                'description' => $goal->description ? substr($goal->description, 0, 30) . '...' : '',
                 'start_date' => $goal->start_date,
                 'due_date' => $goal->due_date,
+                'targets_count' => $goal->targets_count ?? 0,
+                'tasks_count' => $goal->tasks_count ?? 0,
             ]);
 
         $filters = $request->only(['search']);

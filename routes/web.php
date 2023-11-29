@@ -6,6 +6,7 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\GoalController;
 use App\Http\Controllers\User\TargetController;
+use App\Http\Controllers\User\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,6 +53,9 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('goals', GoalController::class);
         Route::resource('targets', TargetController::class);
+
+        Route::get('/get_targets', [TaskController::class, 'targets'])->name('get_targets');
+        Route::resource('tasks', TaskController::class);
     });
 });
 
